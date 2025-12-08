@@ -1,0 +1,41 @@
+/* Directivas de Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables CSS basadas en Figma */
+:root {
+  --color-background: #FFFFFF;
+}
+
+/* Reset y estilos base */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #FFFFFF;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  #root {
+    min-height: 100vh;
+    width: 100%;
+  }
+}
+
+/* Componentes personalizados */
+@layer components {
+  .container-figma {
+    /* Ocupa 100% de la pantalla, sin bordes */
+    width: 100%;
+    min-height: 100vh;
+    background: #FFFFFF;
+    /* Sin borde */
+  }
+}
