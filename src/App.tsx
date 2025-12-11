@@ -1,4 +1,4 @@
-import { Header, Hero, Services } from './components/layout';
+import { Header, Hero, Services, Methodology, Footer } from './components/layout';
 import './index.css';
 
 function App() {
@@ -7,6 +7,8 @@ function App() {
       <Header />
       <Hero />
       <Services />
+      <Methodology />
+      <Footer />
     </div>
   );
 }
