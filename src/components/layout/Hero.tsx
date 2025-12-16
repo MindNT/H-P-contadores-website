@@ -106,6 +106,7 @@ export const Hero = ({ className = '' }: HeroProps) => {
             `}</style>
 
             <section
+                id="hero"
                 className={`w-full flex flex-col items-center ${className}`}
                 style={{
                     position: 'relative',

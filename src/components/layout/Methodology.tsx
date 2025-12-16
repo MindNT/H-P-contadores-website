@@ -159,7 +159,7 @@ export const Methodology = ({ className = '' }: MethodologyProps) => {
 
                     {/* Enlace: Conoce nuestra metodología */}
                     <a
-                        href="#metodologia"
+                        href="#/metodologia"
                         className="methodology-link"
                         style={{
                             position: 'absolute',

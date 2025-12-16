@@ -208,7 +208,7 @@ export const Header = ({ className = '' }: HeaderProps) => {
                 {/* Navegación Desktop - Centrada absolutamente */}
                 <nav className="header-nav-desktop absolute left-1/2 transform -translate-x-1/2 flex items-center gap-[100px]">
                     <a
-                        href="#nosotros"
+                        href="#hero"
                         className="no-underline transition-colors hover:opacity-70"
                         style={{
                             width: '67px',
@@ -226,7 +226,7 @@ export const Header = ({ className = '' }: HeaderProps) => {
                         Nosotros
                     </a>
                     <a
-                        href="#servicios"
+                        href="#nosotros"
                         className="no-underline transition-colors hover:opacity-70"
                         style={{
                             width: '67px',
@@ -320,10 +320,10 @@ export const Header = ({ className = '' }: HeaderProps) => {
             {/* Mobile Menu Panel */}
             <div className={`mobile-menu-panel ${isMenuOpen ? 'open' : ''}`}>
                 <nav className="mobile-menu-nav">
-                    <a href="#nosotros" className="mobile-menu-link" onClick={closeMenu}>
+                    <a href="#hero" className="mobile-menu-link" onClick={closeMenu}>
                         Nosotros
                     </a>
-                    <a href="#servicios" className="mobile-menu-link" onClick={closeMenu}>
+                    <a href="#nosotros" className="mobile-menu-link" onClick={closeMenu}>
                         Servicios
                     </a>
                     <a href="#metodologia" className="mobile-menu-link" onClick={closeMenu}>

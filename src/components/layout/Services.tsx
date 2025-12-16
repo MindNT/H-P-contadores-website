@@ -1,4 +1,4 @@
-import ServicesBackgroundImage from '../../assets/Imagen1.jpg';
+import ServicesBackgroundImage from '../../assets/Imagenes Servicios/servicio-fondo.jpeg';
 
 interface ServicesProps {
     className?: string;
