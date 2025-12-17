@@ -14,12 +14,12 @@ export const Services = ({ className = '' }: ServicesProps) => {
             <style>{`
                 @media (max-width: 1024px) {
                     .services-section {
-                        padding: 20px 15px 40px !important;
+                        padding: 20px 30px 40px !important;
                         min-height: 600px !important;
                     }
                     
                     .services-image {
-                        width: 95% !important;
+                        width: 100% !important;
                         height: 450px !important;
                     }
                     
@@ -65,7 +65,7 @@ export const Services = ({ className = '' }: ServicesProps) => {
                     minHeight: '700px',
                     background: '#FFFFFF',
                     margin: '0 auto',
-                    padding: '20px 20px 40px'
+                    padding: '20px 60px 40px'
                 }}
             >
                 {/* Imagen de fondo */}
@@ -73,7 +73,7 @@ export const Services = ({ className = '' }: ServicesProps) => {
                     className="services-image"
                     style={{
                         position: 'absolute',
-                        width: '92%',
+                        width: '100%',
                         maxWidth: '1250px',
                         height: '550px',
                         left: '50%',

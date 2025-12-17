@@ -5,3 +5,4 @@ export { Services } from './Services';
 export { Methodology } from './Methodology';
 export { MethodologyPage } from './MethodologyPage';
 export { Footer } from './Footer';
+export { PageFooter } from './PageFooter';

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Header, Hero, Services, Methodology, MethodologyPage, Footer } from './components/layout';
+import { Header, Hero, Services, Methodology, MethodologyPage, Footer, PageFooter } from './components/layout';
 import './index.css';
 
 function App() {
@@ -41,9 +41,13 @@ function App() {
           <Services />
           <Methodology />
           <Footer />
+          <PageFooter />
         </>
       ) : (
-        <MethodologyPage />
+        <>
+          <MethodologyPage />
+          <PageFooter />
+        </>
       )}
     </div>
   );

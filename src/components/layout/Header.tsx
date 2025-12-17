@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface HeaderProps {
     className?: string;
@@ -7,9 +7,11 @@ interface HeaderProps {
 /**
  * Componente Header - Navegación centrada como en imagen de referencia
  * Responsive: Desktop intacto, Mobile con menú hamburguesa elegante
+ * Sticky: Se mantiene fijo al hacer scroll
  */
 export const Header = ({ className = '' }: HeaderProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -18,6 +20,20 @@ export const Header = ({ className = '' }: HeaderProps) => {
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
+
+    // Detectar scroll para agregar sombra al header
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 10) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
         <>
@@ -158,6 +174,19 @@ export const Header = ({ className = '' }: HeaderProps) => {
                     color: #FFFFFF;
                 }
 
+                /* Sticky Header Styles */
+                .header-responsive {
+                    position: sticky;
+                    top: 0;
+                    background: #FFFFFF;
+                    z-index: 100;
+                    transition: all 0.3s ease;
+                }
+
+                .header-responsive.scrolled {
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
+
                 @media (max-width: 1024px) {
                     .hamburger-button {
                         display: flex;
@@ -183,7 +212,7 @@ export const Header = ({ className = '' }: HeaderProps) => {
                 }
             `}</style>
 
-            <header className={`header-responsive w-full mt-8 pt-6 pb-1 px-[60px] flex items-center relative ${className}`}>
+            <header className={`header-responsive w-full mt-12 pt-6 pb-1 px-[60px] flex items-center relative ${isScrolled ? 'scrolled' : ''} ${className}`}>
                 {/* Título H&P Contadores - Posición izquierda */}
                 <div className="flex-shrink-0">
                     <h1
