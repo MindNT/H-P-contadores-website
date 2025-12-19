@@ -12,6 +12,7 @@ interface HeaderProps {
 export const Header = ({ className = '' }: HeaderProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [activeSection, setActiveSection] = useState('hero');
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -21,13 +22,30 @@ export const Header = ({ className = '' }: HeaderProps) => {
         setIsMenuOpen(false);
     };
 
-    // Detectar scroll para agregar sombra al header
+    // Detectar scroll para agregar sombra al header y sección activa
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 10) {
                 setIsScrolled(true);
             } else {
                 setIsScrolled(false);
+            }
+
+            // Detectar sección activa
+            const sections = ['hero', 'servicios', 'nosotros', 'metodologia'];
+            const scrollPosition = window.scrollY + 200;
+
+            for (const sectionId of sections) {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    const offsetTop = element.offsetTop;
+                    const offsetBottom = offsetTop + element.offsetHeight;
+
+                    if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+                        setActiveSection(sectionId);
+                        break;
+                    }
+                }
             }
         };
 
@@ -179,12 +197,37 @@ export const Header = ({ className = '' }: HeaderProps) => {
                     position: sticky;
                     top: 0;
                     background: #FFFFFF;
-                    z-index: 100;
+                    z-index: 50;
                     transition: all 0.3s ease;
                 }
 
                 .header-responsive.scrolled {
                     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
+
+                /* Indicador de sección activa */
+                .nav-link {
+                    position: relative;
+                    transition: color 0.3s ease;
+                }
+
+                .nav-link::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -8px;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background: #389990;
+                    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+
+                .nav-link.active::after {
+                    width: 100%;
+                }
+
+                .nav-link.active {
+                    color: #389990 !important;
                 }
 
                 @media (max-width: 1024px) {
@@ -212,7 +255,15 @@ export const Header = ({ className = '' }: HeaderProps) => {
                 }
             `}</style>
 
-            <header className={`header-responsive w-full mt-12 pt-6 pb-1 px-[60px] flex items-center relative ${isScrolled ? 'scrolled' : ''} ${className}`}>
+            <header
+                className={`header-responsive w-full mt-12 flex items-center relative ${isScrolled ? 'scrolled' : ''} ${className}`}
+                style={{
+                    paddingTop: '32px',
+                    paddingBottom: '24px',
+                    paddingLeft: '60px',
+                    paddingRight: '60px'
+                }}
+            >
                 {/* Título H&P Contadores - Posición izquierda */}
                 <div className="flex-shrink-0">
                     <h1
@@ -238,7 +289,7 @@ export const Header = ({ className = '' }: HeaderProps) => {
                 <nav className="header-nav-desktop absolute left-1/2 transform -translate-x-1/2 flex items-center gap-[100px]">
                     <a
                         href="#hero"
-                        className="no-underline transition-colors hover:opacity-70"
+                        className={`nav-link no-underline transition-colors hover:opacity-70 ${activeSection === 'hero' ? 'active' : ''}`}
                         style={{
                             width: '67px',
                             height: '22px',
@@ -256,7 +307,7 @@ export const Header = ({ className = '' }: HeaderProps) => {
                     </a>
                     <a
                         href="#nosotros"
-                        className="no-underline transition-colors hover:opacity-70"
+                        className={`nav-link no-underline transition-colors hover:opacity-70 ${activeSection === 'nosotros' ? 'active' : ''}`}
                         style={{
                             width: '67px',
                             height: '22px',
@@ -274,7 +325,7 @@ export const Header = ({ className = '' }: HeaderProps) => {
                     </a>
                     <a
                         href="#metodologia"
-                        className="no-underline transition-colors hover:opacity-70"
+                        className={`nav-link no-underline transition-colors hover:opacity-70 ${activeSection === 'metodologia' ? 'active' : ''}`}
                         style={{
                             width: '67px',
                             height: '22px',

@@ -1,4 +1,4 @@
-interface PageFooterProps {
+ interface PageFooterProps {
     className?: string;
 }
 

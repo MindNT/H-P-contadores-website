@@ -55,31 +55,54 @@ const servicesData: Service[] = [
     }
 ];
 
+import { createPortal } from 'react-dom';
+
 const ServiceModal = ({ isOpen, onClose, service }: ServiceModalProps) => {
     if (!isOpen || !service) return null;
 
-    return (
+    return createPortal(
         <>
             <style>{`
+                /* Prevent horizontal scroll globally */
+                html, body {
+                    overflow-x: hidden !important;
+                    width: 100%;
+                    max-width: 100%;
+                }
+
                 .modal-fullscreen {
                     position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100vh;
+                    inset: 0; /* Ocupa toda la pantalla de forma segura */
                     background: #389990;
-                    z-index: 9999;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    z-index: 2147483647; /* Máximo absoluto */
+                    overflow-y: auto; /* El único scroll permitido */
+                    overflow-x: hidden;
+                    overscroll-behavior: contain; /* Evita que el scroll afecte a la página de fondo */
                     animation: fadeIn 0.3s ease;
+                }
+
+                /* Wrapper para centrado seguro que permite scroll */
+                .modal-wrapper {
+                    min-height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     padding: 20px;
+                    box-sizing: border-box;
                 }
 
                 .modal-content-minimal {
                     max-width: 700px;
                     width: 100%;
                     text-align: center;
+                    position: relative;
+                    z-index: 2147483648;
+                    margin: auto; /* Ayuda al centrado en flex */
+                }
+                
+                /* Asegurar que el contenido sea visible */
+                .modal-title, .modal-description, .modal-price {
+                    color: #FFFFFF !important;
                 }
 
                 .modal-buttons {
@@ -131,55 +154,63 @@ const ServiceModal = ({ isOpen, onClose, service }: ServiceModalProps) => {
                     .modal-button {
                         width: 100%;
                     }
+                    
+                    /* Asegurar padding en móvil */
+                    .modal-wrapper {
+                        padding: 40px 20px;
+                    }
                 }
             `}</style>
 
             <div className="modal-fullscreen">
-                <div className="modal-content-minimal">
-                    <h2 style={{
-                        fontFamily: 'Nunito Sans',
-                        fontWeight: 600,
-                        fontSize: '48px',
-                        lineHeight: '1.2',
-                        color: '#FFFFFF',
-                        margin: '0 0 30px 0'
-                    }}>
-                        {service.title}
-                    </h2>
+                <div className="modal-wrapper">
+                    <div className="modal-content-minimal">
+                        <h2 style={{
+                            fontFamily: 'Nunito Sans',
+                            fontWeight: 600,
+                            fontSize: '48px',
+                            lineHeight: '1.2',
+                            color: '#FFFFFF',
+                            margin: '0 0 30px 0'
+                        }}>
+                            {service.title}
+                        </h2>
 
-                    <p style={{
-                        fontFamily: 'Nunito',
-                        fontWeight: 400,
-                        fontSize: '18px',
-                        lineHeight: '28px',
-                        color: '#FFFFFF',
-                        margin: '0 0 40px 0',
-                        opacity: 0.95
-                    }}>
-                        {service.description}
-                    </p>
+                        <p style={{
+                            fontFamily: 'Nunito',
+                            fontWeight: 400,
+                            fontSize: '18px',
+                            lineHeight: '28px',
+                            color: '#FFFFFF',
+                            margin: '0 0 40px 0',
+                            opacity: 0.95
+                        }}>
+                            {service.description}
+                        </p>
 
-                    <div style={{
-                        fontFamily: 'Nunito Sans',
-                        fontWeight: 700,
-                        fontSize: '64px',
-                        color: '#FFFFFF',
-                        margin: '0 0 40px 0'
-                    }}>
-                        {service.price}
-                    </div>
+                        <div style={{
+                            fontFamily: 'Nunito Sans',
+                            fontWeight: 700,
+                            fontSize: '64px',
+                            color: '#FFFFFF',
+                            margin: '0 0 40px 0'
+                        }}>
+                            {service.price}
+                        </div>
 
-                    <div className="modal-buttons">
-                        <button className="modal-button modal-button-primary">
-                            Contactar con un asesor
-                        </button>
-                        <button className="modal-button" onClick={onClose}>
-                            Regresar
-                        </button>
+                        <div className="modal-buttons">
+                            <button className="modal-button modal-button-primary">
+                                Contactar con un asesor
+                            </button>
+                            <button className="modal-button" onClick={onClose}>
+                                Regresar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </>
+        </>,
+        document.body
     );
 };
 
@@ -203,6 +234,39 @@ export const Footer = ({ className = '' }: FooterProps) => {
     return (
         <>
             <style>{`
+                /* Estilos mejorados para las tarjetas de servicio */
+                .footer-service-item {
+                    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                }
+
+                /* Efectos para Hover (Desktop) y Active/Touch (Móvil) */
+                .footer-service-item:hover,
+                .footer-service-item:active,
+                .footer-service-item:focus-within {
+                    transform: translateY(-8px);
+                }
+
+                .footer-service-item:hover .service-title,
+                .footer-service-item:active .service-title,
+                .footer-service-item:focus-within .service-title {
+                    color: #389990 !important;
+                }
+
+                /* Sombra dinámica para las imágenes - Forzada con !important */
+                .footer-image {
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important; 
+                    transition: transform 0.4s ease, opacity 0.3s ease, box-shadow 0.4s ease !important;
+                    /* Mejorar rendimiento en móvil */
+                    will-change: transform, box-shadow;
+                }
+
+                .footer-service-item:hover .footer-image,
+                .footer-service-item:active .footer-image,
+                .footer-service-item:focus-within .footer-image {
+                    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
+                    transform: scale(1.02) !important;
+                }
+
                 @media (max-width: 1024px) {
                     .footer-section {
                         padding: 40px 20px 80px !important;
@@ -283,11 +347,10 @@ export const Footer = ({ className = '' }: FooterProps) => {
                     boxSizing: 'border-box',
                     width: '100%',
                     background: '#FFFFFF',
-                    padding: '60px 20px 100px',
-                    overflowX: 'hidden'
+                    padding: '60px 20px 100px'
                 }}
             >
-                <div className="footer-container" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto', overflowX: 'hidden' }}>
+                <div className="footer-container" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
                     {/* Título SERVICIOS */}
                     <h2
                         className="footer-title"
@@ -310,9 +373,14 @@ export const Footer = ({ className = '' }: FooterProps) => {
                         {/* Fila 1: Servicios 1 y 2 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '60px', gap: '80px', flexWrap: 'wrap' }}>
                             {/* Servicio 1 */}
-                            <div className="footer-service-item" style={{ width: '45%', minWidth: '300px', maxWidth: '600px' }}>
+                            <div
+                                className="footer-service-item"
+                                style={{ width: '45%', minWidth: '300px', maxWidth: '600px', cursor: 'pointer' }}
+                                onClick={() => openModal(servicesData[0])}
+                                role="button"
+                                aria-label={`Ver detalles de ${servicesData[0].title}`}
+                            >
                                 <div
-                                    onClick={() => openModal(servicesData[0])}
                                     className="footer-image hover:opacity-90 hover:scale-[1.02]"
                                     style={{
                                         width: '100%',
@@ -322,12 +390,10 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat',
-                                        cursor: 'pointer',
                                         transition: 'transform 0.3s ease, opacity 0.3s ease',
-                                        borderRadius: '8px'
+                                        borderRadius: '8px',
+                                        pointerEvents: 'none'
                                     }}
-                                    role="button"
-                                    aria-label={`Ver detalles de ${servicesData[0].title}`}
                                 />
                                 <div className="footer-text" style={{
                                     marginTop: '20px',
@@ -336,23 +402,30 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     fontWeight: 500,
                                     fontSize: '18px',
                                     lineHeight: '28px',
-                                    color: '#8A8A8A'
+                                    color: '#8A8A8A',
+                                    pointerEvents: 'none'
                                 }}>
-                                    <strong style={{
+                                    <strong className="service-title" style={{
                                         display: 'block',
                                         fontWeight: 600,
                                         fontSize: '24px',
                                         color: '#000000',
-                                        marginBottom: '10px'
+                                        marginBottom: '10px',
+                                        transition: 'color 0.3s ease'
                                     }}>{servicesData[0].title}</strong>
                                     {servicesData[0].description}
                                 </div>
                             </div>
 
                             {/* Servicio 2 */}
-                            <div className="footer-service-item" style={{ width: '45%', minWidth: '300px', maxWidth: '600px' }}>
+                            <div
+                                className="footer-service-item"
+                                style={{ width: '45%', minWidth: '300px', maxWidth: '600px', cursor: 'pointer' }}
+                                onClick={() => openModal(servicesData[1])}
+                                role="button"
+                                aria-label={`Ver detalles de ${servicesData[1].title}`}
+                            >
                                 <div
-                                    onClick={() => openModal(servicesData[1])}
                                     className="footer-image hover:opacity-90 hover:scale-[1.02]"
                                     style={{
                                         width: '100%',
@@ -362,12 +435,10 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat',
-                                        cursor: 'pointer',
                                         transition: 'transform 0.3s ease, opacity 0.3s ease',
-                                        borderRadius: '8px'
+                                        borderRadius: '8px',
+                                        pointerEvents: 'none'
                                     }}
-                                    role="button"
-                                    aria-label={`Ver detalles de ${servicesData[1].title}`}
                                 />
                                 <div className="footer-text" style={{
                                     marginTop: '20px',
@@ -376,14 +447,16 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     fontWeight: 500,
                                     fontSize: '18px',
                                     lineHeight: '28px',
-                                    color: '#8A8A8A'
+                                    color: '#8A8A8A',
+                                    pointerEvents: 'none'
                                 }}>
-                                    <strong style={{
+                                    <strong className="service-title" style={{
                                         display: 'block',
                                         fontWeight: 600,
                                         fontSize: '24px',
                                         color: '#000000',
-                                        marginBottom: '10px'
+                                        marginBottom: '10px',
+                                        transition: 'color 0.3s ease'
                                     }}>{servicesData[1].title}</strong>
                                     {servicesData[1].description}
                                 </div>
@@ -393,9 +466,14 @@ export const Footer = ({ className = '' }: FooterProps) => {
                         {/* Fila 2: Servicios 3 y 4 */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '60px', gap: '80px', flexWrap: 'wrap' }}>
                             {/* Servicio 3 */}
-                            <div className="footer-service-item" style={{ width: '45%', minWidth: '300px', maxWidth: '600px' }}>
+                            <div
+                                className="footer-service-item"
+                                style={{ width: '45%', minWidth: '300px', maxWidth: '600px', cursor: 'pointer' }}
+                                onClick={() => openModal(servicesData[2])}
+                                role="button"
+                                aria-label={`Ver detalles de ${servicesData[2].title}`}
+                            >
                                 <div
-                                    onClick={() => openModal(servicesData[2])}
                                     className="footer-image hover:opacity-90 hover:scale-[1.02]"
                                     style={{
                                         width: '100%',
@@ -405,12 +483,10 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat',
-                                        cursor: 'pointer',
                                         transition: 'transform 0.3s ease, opacity 0.3s ease',
-                                        borderRadius: '8px'
+                                        borderRadius: '8px',
+                                        pointerEvents: 'none'
                                     }}
-                                    role="button"
-                                    aria-label={`Ver detalles de ${servicesData[2].title}`}
                                 />
                                 <div className="footer-text" style={{
                                     marginTop: '20px',
@@ -419,23 +495,30 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     fontWeight: 500,
                                     fontSize: '18px',
                                     lineHeight: '28px',
-                                    color: '#8A8A8A'
+                                    color: '#8A8A8A',
+                                    pointerEvents: 'none'
                                 }}>
-                                    <strong style={{
+                                    <strong className="service-title" style={{
                                         display: 'block',
                                         fontWeight: 600,
                                         fontSize: '24px',
                                         color: '#000000',
-                                        marginBottom: '10px'
+                                        marginBottom: '10px',
+                                        transition: 'color 0.3s ease'
                                     }}>{servicesData[2].title}</strong>
                                     {servicesData[2].description}
                                 </div>
                             </div>
 
                             {/* Servicio 4 */}
-                            <div className="footer-service-item" style={{ width: '45%', minWidth: '300px', maxWidth: '600px' }}>
+                            <div
+                                className="footer-service-item"
+                                style={{ width: '45%', minWidth: '300px', maxWidth: '600px', cursor: 'pointer' }}
+                                onClick={() => openModal(servicesData[3])}
+                                role="button"
+                                aria-label={`Ver detalles de ${servicesData[3].title}`}
+                            >
                                 <div
-                                    onClick={() => openModal(servicesData[3])}
                                     className="footer-image hover:opacity-90 hover:scale-[1.02]"
                                     style={{
                                         width: '100%',
@@ -445,12 +528,10 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat',
-                                        cursor: 'pointer',
                                         transition: 'transform 0.3s ease, opacity 0.3s ease',
-                                        borderRadius: '8px'
+                                        borderRadius: '8px',
+                                        pointerEvents: 'none'
                                     }}
-                                    role="button"
-                                    aria-label={`Ver detalles de ${servicesData[3].title}`}
                                 />
                                 <div className="footer-text" style={{
                                     marginTop: '20px',
@@ -459,14 +540,16 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     fontWeight: 500,
                                     fontSize: '18px',
                                     lineHeight: '28px',
-                                    color: '#8A8A8A'
+                                    color: '#8A8A8A',
+                                    pointerEvents: 'none'
                                 }}>
-                                    <strong style={{
+                                    <strong className="service-title" style={{
                                         display: 'block',
                                         fontWeight: 600,
                                         fontSize: '24px',
                                         color: '#000000',
-                                        marginBottom: '10px'
+                                        marginBottom: '10px',
+                                        transition: 'color 0.3s ease'
                                     }}>{servicesData[3].title}</strong>
                                     {servicesData[3].description}
                                 </div>
@@ -476,9 +559,14 @@ export const Footer = ({ className = '' }: FooterProps) => {
                         {/* Fila 3: Servicio 5 centrado */}
                         <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                             {/* Servicio 5 */}
-                            <div className="footer-service-item" style={{ width: '45%', minWidth: '300px', maxWidth: '600px' }}>
+                            <div
+                                className="footer-service-item"
+                                style={{ width: '45%', minWidth: '300px', maxWidth: '600px', cursor: 'pointer' }}
+                                onClick={() => openModal(servicesData[4])}
+                                role="button"
+                                aria-label={`Ver detalles de ${servicesData[4].title}`}
+                            >
                                 <div
-                                    onClick={() => openModal(servicesData[4])}
                                     className="footer-image hover:opacity-90 hover:scale-[1.02]"
                                     style={{
                                         width: '100%',
@@ -488,12 +576,10 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         backgroundRepeat: 'no-repeat',
-                                        cursor: 'pointer',
                                         transition: 'transform 0.3s ease, opacity 0.3s ease',
-                                        borderRadius: '8px'
+                                        borderRadius: '8px',
+                                        pointerEvents: 'none'
                                     }}
-                                    role="button"
-                                    aria-label={`Ver detalles de ${servicesData[4].title}`}
                                 />
                                 <div className="footer-text" style={{
                                     marginTop: '20px',
@@ -502,14 +588,16 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     fontWeight: 500,
                                     fontSize: '18px',
                                     lineHeight: '28px',
-                                    color: '#8A8A8A'
+                                    color: '#8A8A8A',
+                                    pointerEvents: 'none'
                                 }}>
-                                    <strong style={{
+                                    <strong className="service-title" style={{
                                         display: 'block',
                                         fontWeight: 600,
                                         fontSize: '24px',
                                         color: '#000000',
-                                        marginBottom: '10px'
+                                        marginBottom: '10px',
+                                        transition: 'color 0.3s ease'
                                     }}>{servicesData[4].title}</strong>
                                     {servicesData[4].description}
                                 </div>

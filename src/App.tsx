@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Header, Hero, Services, Methodology, MethodologyPage, Footer, PageFooter } from './components/layout';
+import { BackToTop, ScrollAnimation } from './components/common';
 import './index.css';
 
 function App() {
@@ -37,18 +38,29 @@ function App() {
       <Header />
       {currentPage === 'home' ? (
         <>
-          <Hero />
-          <Services />
-          <Methodology />
-          <Footer />
+          <ScrollAnimation>
+            <Hero />
+          </ScrollAnimation>
+          <ScrollAnimation>
+            <Services />
+          </ScrollAnimation>
+          <ScrollAnimation>
+            <Methodology />
+          </ScrollAnimation>
+          <ScrollAnimation>
+            <Footer />
+          </ScrollAnimation>
           <PageFooter />
         </>
       ) : (
         <>
-          <MethodologyPage />
+          <ScrollAnimation>
+            <MethodologyPage />
+          </ScrollAnimation>
           <PageFooter />
         </>
       )}
+      <BackToTop />
     </div>
   );
 }
