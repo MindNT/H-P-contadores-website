@@ -1,4 +1,5 @@
 import ServicesBackgroundImage from '../../assets/Imagenes Servicios/servicio-fondo.jpeg';
+import ServicesVideo from '../../assets/293084.mp4';
 
 interface ServicesProps {
     className?: string;
@@ -12,13 +13,42 @@ export const Services = ({ className = '' }: ServicesProps) => {
     return (
         <>
             <style>{`
+                /* Estilos para el video de fondo */
+                .services-video {
+                    position: absolute;
+                    width: 100%;
+                    max-width: 1250px;
+                    height: 550px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    top: 20px;
+                    object-fit: cover;
+                    opacity: 1;
+                }
+
+                /* Fallback image para cuando el video no carga */
+                .services-video-fallback {
+                    position: absolute;
+                    width: 100%;
+                    max-width: 1250px;
+                    height: 550px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    top: 20px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    opacity: 1;
+                }
+
                 @media (max-width: 1024px) {
                     .services-section {
-                        padding: 20px 30px 40px !important;
+                        padding: 10px 30px 40px !important;
                         min-height: 600px !important;
                     }
                     
-                    .services-image {
+                    .services-video,
+                    .services-video-fallback {
                         width: 100% !important;
                         height: 450px !important;
                     }
@@ -33,19 +63,21 @@ export const Services = ({ className = '' }: ServicesProps) => {
                 
                 @media (max-width: 768px) {
                     .services-section {
-                        padding: 15px 10px 30px !important;
+                        padding: 5px 10px 30px !important;
                         min-height: 500px !important;
+                        margin-top: 0 !important;
                     }
                     
-                    .services-image {
+                    .services-video,
+                    .services-video-fallback {
                         width: 100% !important;
                         height: 300px !important;
-                        top: 15px !important;
+                        top: 5px !important;
                     }
                     
                     .services-text {
                         width: 95% !important;
-                        top: 340px !important;
+                        top: 320px !important;
                         font-size: 16px !important;
                         line-height: 24px !important;
                         padding: 0 10px !important;
@@ -68,24 +100,24 @@ export const Services = ({ className = '' }: ServicesProps) => {
                     padding: '20px 60px 40px'
                 }}
             >
-                {/* Imagen de fondo */}
-                <div
-                    className="services-image"
-                    style={{
-                        position: 'absolute',
-                        width: '100%',
-                        maxWidth: '1250px',
-                        height: '550px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        top: '20px',
-                        backgroundImage: `url(${ServicesBackgroundImage})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat',
-                        opacity: 1
-                    }}
-                />
+                {/* Video de fondo */}
+                <video
+                    className="services-video"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    poster={ServicesBackgroundImage}
+                >
+                    <source src={ServicesVideo} type="video/mp4" />
+                    {/* Fallback para navegadores que no soportan video */}
+                    <div
+                        className="services-video-fallback"
+                        style={{
+                            backgroundImage: `url(${ServicesBackgroundImage})`
+                        }}
+                    />
+                </video>
 
                 {/* Texto de servicios en la parte inferior */}
                 <div

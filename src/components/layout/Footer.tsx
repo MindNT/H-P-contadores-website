@@ -234,6 +234,22 @@ export const Footer = ({ className = '' }: FooterProps) => {
     return (
         <>
             <style>{`
+                /* Animación para el título SERVICIOS */
+                @keyframes slideInLeft {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+
+                .footer-title {
+                    animation: slideInLeft 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+                }
+
                 /* Estilos mejorados para las tarjetas de servicio */
                 .footer-service-item {
                     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -265,6 +281,43 @@ export const Footer = ({ className = '' }: FooterProps) => {
                 .footer-service-item:focus-within .footer-image {
                     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
                     transform: scale(1.02) !important;
+                }
+
+                /* Animación de entrada escalonada (Stagger) */
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                .footer-service-item {
+                    animation: fadeInUp 0.6s ease-out both;
+                }
+
+                /* Delays escalonados para cada servicio */
+                .footer-service-item:nth-child(1) {
+                    animation-delay: 0ms;
+                }
+
+                .footer-service-item:nth-child(2) {
+                    animation-delay: 150ms;
+                }
+
+                .footer-service-item:nth-child(3) {
+                    animation-delay: 300ms;
+                }
+
+                .footer-service-item:nth-child(4) {
+                    animation-delay: 450ms;
+                }
+
+                .footer-service-item:nth-child(5) {
+                    animation-delay: 600ms;
                 }
 
                 @media (max-width: 1024px) {
@@ -347,10 +400,10 @@ export const Footer = ({ className = '' }: FooterProps) => {
                     boxSizing: 'border-box',
                     width: '100%',
                     background: '#FFFFFF',
-                    padding: '60px 20px 100px'
+                    padding: '60px 60px 100px'
                 }}
             >
-                <div className="footer-container" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
+                <div className="footer-container" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                     {/* Título SERVICIOS */}
                     <h2
                         className="footer-title"
@@ -415,6 +468,26 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     }}>{servicesData[0].title}</strong>
                                     {servicesData[0].description}
                                 </div>
+                                <button
+                                    style={{
+                                        marginTop: '20px',
+                                        padding: '12px 32px',
+                                        backgroundColor: '#389990',
+                                        color: '#FFFFFF',
+                                        fontFamily: 'Nunito Sans',
+                                        fontWeight: 600,
+                                        fontSize: '16px',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        transition: 'opacity 0.3s ease',
+                                        pointerEvents: 'auto'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                                >
+                                    Contactar
+                                </button>
                             </div>
 
                             {/* Servicio 2 */}
@@ -460,6 +533,26 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     }}>{servicesData[1].title}</strong>
                                     {servicesData[1].description}
                                 </div>
+                                <button
+                                    style={{
+                                        marginTop: '20px',
+                                        padding: '12px 32px',
+                                        backgroundColor: '#389990',
+                                        color: '#FFFFFF',
+                                        fontFamily: 'Nunito Sans',
+                                        fontWeight: 600,
+                                        fontSize: '16px',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        transition: 'opacity 0.3s ease',
+                                        pointerEvents: 'auto'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                                >
+                                    Contactar
+                                </button>
                             </div>
                         </div>
 
@@ -508,6 +601,26 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     }}>{servicesData[2].title}</strong>
                                     {servicesData[2].description}
                                 </div>
+                                <button
+                                    style={{
+                                        marginTop: '20px',
+                                        padding: '12px 32px',
+                                        backgroundColor: '#389990',
+                                        color: '#FFFFFF',
+                                        fontFamily: 'Nunito Sans',
+                                        fontWeight: 600,
+                                        fontSize: '16px',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        transition: 'opacity 0.3s ease',
+                                        pointerEvents: 'auto'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                                >
+                                    Contactar
+                                </button>
                             </div>
 
                             {/* Servicio 4 */}
@@ -553,11 +666,31 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     }}>{servicesData[3].title}</strong>
                                     {servicesData[3].description}
                                 </div>
+                                <button
+                                    style={{
+                                        marginTop: '20px',
+                                        padding: '12px 32px',
+                                        backgroundColor: '#389990',
+                                        color: '#FFFFFF',
+                                        fontFamily: 'Nunito Sans',
+                                        fontWeight: 600,
+                                        fontSize: '16px',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        transition: 'opacity 0.3s ease',
+                                        pointerEvents: 'auto'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                                >
+                                    Contactar
+                                </button>
                             </div>
                         </div>
 
-                        {/* Fila 3: Servicio 5 centrado */}
-                        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                        {/* Fila 3: Servicio 5 alineado a la izquierda */}
+                        <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
                             {/* Servicio 5 */}
                             <div
                                 className="footer-service-item"
@@ -601,6 +734,26 @@ export const Footer = ({ className = '' }: FooterProps) => {
                                     }}>{servicesData[4].title}</strong>
                                     {servicesData[4].description}
                                 </div>
+                                <button
+                                    style={{
+                                        marginTop: '20px',
+                                        padding: '12px 32px',
+                                        backgroundColor: '#389990',
+                                        color: '#FFFFFF',
+                                        fontFamily: 'Nunito Sans',
+                                        fontWeight: 600,
+                                        fontSize: '16px',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        transition: 'opacity 0.3s ease',
+                                        pointerEvents: 'auto'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                                >
+                                    Contactar
+                                </button>
                             </div>
                         </div>
                     </div>

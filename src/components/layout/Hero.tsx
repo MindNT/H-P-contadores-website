@@ -12,6 +12,35 @@ export const Hero = ({ className = '' }: HeroProps) => {
     return (
         <>
             <style>{`
+                /* Animación Fade In con Blur - Sutil y profesional */
+                @keyframes fadeInBlur {
+                    from {
+                        opacity: 0;
+                        filter: blur(3px);
+                    }
+                    to {
+                        opacity: 1;
+                        filter: blur(0);
+                    }
+                }
+
+                /* Aplicar animación escalonada a elementos del Hero */
+                .hero-logo {
+                    animation: fadeInBlur 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0ms both;
+                }
+
+                .hero-claridad {
+                    animation: fadeInBlur 1.5s cubic-bezier(0.4, 0, 0.2, 1) 200ms both;
+                }
+
+                .hero-text {
+                    animation: fadeInBlur 1.5s cubic-bezier(0.4, 0, 0.2, 1) 400ms both;
+                }
+
+                .hero-numero {
+                    animation: fadeInBlur 1.5s cubic-bezier(0.4, 0, 0.2, 1) 600ms both;
+                }
+
                 @media (max-width: 1024px) {
                     .hero-container {
                         padding: 20px !important;
@@ -69,8 +98,16 @@ export const Hero = ({ className = '' }: HeroProps) => {
                 }
                 
                 @media (max-width: 768px) {
+                    .hero-section {
+                        min-height: auto !important;
+                        padding-bottom: 0 !important;
+                        overflow: visible !important;
+                    }
+                    
                     .hero-container {
                         padding: 15px !important;
+                        margin-bottom: 0px !important;
+                        overflow: visible !important;
                     }
                     
                     .hero-claridad-wrapper {
@@ -102,12 +139,29 @@ export const Hero = ({ className = '' }: HeroProps) => {
                     .hero-numero-wrapper h2 {
                         font-size: 36px !important;
                     }
+                    
+                    .hero-cta {
+                        margin-top: 20px !important;
+                        margin-bottom: 0px !important;
+                        position: relative !important;
+                        bottom: auto !important;
+                        left: 0 !important;
+                        text-align: center !important;
+                        padding-bottom: 10px !important;
+                        overflow: visible !important;
+                    }
+                    
+                    .hero-cta-line {
+                        left: 50% !important;
+                        transform: translateX(-50%) !important;
+                        bottom: 0px !important;
+                    }
                 }
             `}</style>
 
             <section
                 id="hero"
-                className={`w-full flex flex-col items-center ${className}`}
+                className={`hero-section w-full flex flex-col items-center ${className}`}
                 style={{
                     position: 'relative',
                     width: '100%',
@@ -135,7 +189,7 @@ export const Hero = ({ className = '' }: HeroProps) => {
                         <img
                             src={Logo}
                             alt="H&P Logo"
-                            className="object-contain"
+                            className="object-contain hero-logo"
                             style={{
                                 width: '100px',
                                 height: '70px'
@@ -143,6 +197,7 @@ export const Hero = ({ className = '' }: HeroProps) => {
                         />
 
                         <h1
+                            className="hero-claridad"
                             style={{
                                 fontFamily: 'Nunito Sans',
                                 fontWeight: 600,
@@ -161,7 +216,7 @@ export const Hero = ({ className = '' }: HeroProps) => {
                     </div>
 
                     {/* Contenedor flex para texto descriptivo y EN CADA */}
-                    <div className="hero-text-wrapper" style={{
+                    <div className="hero-text-wrapper hero-text" style={{
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'flex-start',
@@ -209,7 +264,7 @@ export const Hero = ({ className = '' }: HeroProps) => {
                     </div>
 
                     {/* NUMERO - Centrado */}
-                    <div className="hero-numero-wrapper" style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div className="hero-numero-wrapper hero-numero" style={{ display: 'flex', justifyContent: 'center' }}>
                         <h2
                             style={{
                                 fontFamily: 'Nunito Sans',
@@ -230,11 +285,9 @@ export const Hero = ({ className = '' }: HeroProps) => {
                 </div>
 
 
-                {/* Botón CTA - Nuestros servicios */}
+                {/* Título - Nuestros servicios */}
                 <div className="hero-cta" style={{ position: 'absolute', bottom: '60px', left: '90px' }}>
-                    <a
-                        href="#nosotros"
-                        className="cursor-pointer transition-all hover:opacity-90 no-underline"
+                    <span
                         style={{
                             fontFamily: 'Inter',
                             fontStyle: 'normal',
@@ -242,14 +295,14 @@ export const Hero = ({ className = '' }: HeroProps) => {
                             fontSize: '14px',
                             lineHeight: '17px',
                             color: '#7A7A7A',
-                            textDecoration: 'none',
                             display: 'inline-block'
                         }}
                     >
                         Nuestros servicios
-                    </a>
+                    </span>
                     {/* Línea decorativa debajo */}
                     <div
+                        className="hero-cta-line"
                         style={{
                             position: 'absolute',
                             width: '150px',
@@ -257,8 +310,7 @@ export const Hero = ({ className = '' }: HeroProps) => {
                             backgroundColor: '#389990',
                             opacity: 0.5,
                             bottom: '-5px',
-                            left: '50%',
-                            transform: 'translateX(-50%)'
+                            left: '0'
                         }}
                     />
                 </div>

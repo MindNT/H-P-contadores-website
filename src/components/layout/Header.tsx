@@ -12,7 +12,7 @@ interface HeaderProps {
 export const Header = ({ className = '' }: HeaderProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [activeSection, setActiveSection] = useState('hero');
+    const [activeSection, setActiveSection] = useState('nosotros'); // Inicia en "Nosotros"
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -21,6 +21,29 @@ export const Header = ({ className = '' }: HeaderProps) => {
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
+
+    // Detectar URL actual para páginas de routing
+    useEffect(() => {
+        const checkRoute = () => {
+            const path = window.location.pathname + window.location.hash;
+
+            if (path.includes('/metodologia') || path.includes('#/metodologia')) {
+                setActiveSection('metodologia');
+            } else if (path.includes('/servicios') || path.includes('#/servicios')) {
+                setActiveSection('servicios');
+            }
+        };
+
+        // Ejecutar al montar y cuando cambie la URL
+        checkRoute();
+        window.addEventListener('hashchange', checkRoute);
+        window.addEventListener('popstate', checkRoute);
+
+        return () => {
+            window.removeEventListener('hashchange', checkRoute);
+            window.removeEventListener('popstate', checkRoute);
+        };
+    }, []);
 
     // Detectar scroll para agregar sombra al header y sección activa
     useEffect(() => {
@@ -31,23 +54,49 @@ export const Header = ({ className = '' }: HeaderProps) => {
                 setIsScrolled(false);
             }
 
-            // Detectar sección activa
-            const sections = ['hero', 'servicios', 'nosotros', 'metodologia'];
+            // Solo actualizar activeSection si NO estamos en una ruta específica
+            const path = window.location.pathname + window.location.hash;
+            if (path.includes('/metodologia') || path.includes('#/metodologia') ||
+                path.includes('/servicios') || path.includes('#/servicios')) {
+                return; // No cambiar activeSection si estamos en una página de ruta
+            }
+
+            // Detectar sección activa basado en scroll
             const scrollPosition = window.scrollY + 200;
 
-            for (const sectionId of sections) {
-                const element = document.getElementById(sectionId);
-                if (element) {
-                    const offsetTop = element.offsetTop;
-                    const offsetBottom = offsetTop + element.offsetHeight;
+            // Si está en Hero (parte superior) → "Nosotros" activo
+            if (scrollPosition < 400) {
+                setActiveSection('nosotros');
+                return;
+            }
 
-                    if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-                        setActiveSection(sectionId);
-                        break;
-                    }
+            // Obtener elementos de las secciones
+            const metodologiaElement = document.getElementById('metodologia');
+            const nosotrosElement = document.getElementById('nosotros');
+
+            // Mapeo: Hero + Services → "nosotros", Methodology → "metodologia", Footer → "servicios"
+            if (nosotrosElement) {
+                const offsetTop = nosotrosElement.offsetTop;
+                if (scrollPosition >= offsetTop) {
+                    setActiveSection('servicios'); // Footer (grid) → "Servicios" activo
+                    return;
                 }
             }
+
+            if (metodologiaElement) {
+                const offsetTop = metodologiaElement.offsetTop;
+                if (scrollPosition >= offsetTop) {
+                    setActiveSection('metodologia'); // Methodology → "Metodología" activo
+                    return;
+                }
+            }
+
+            // Si está en Hero o Services → "Nosotros" activo
+            setActiveSection('nosotros');
         };
+
+        // Ejecutar inmediatamente al montar
+        handleScroll();
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
@@ -289,7 +338,7 @@ export const Header = ({ className = '' }: HeaderProps) => {
                 <nav className="header-nav-desktop absolute left-1/2 transform -translate-x-1/2 flex items-center gap-[100px]">
                     <a
                         href="#hero"
-                        className={`nav-link no-underline transition-colors hover:opacity-70 ${activeSection === 'hero' ? 'active' : ''}`}
+                        className={`nav-link no-underline transition-colors hover:opacity-70 ${activeSection === 'nosotros' ? 'active' : ''}`}
                         style={{
                             width: '67px',
                             height: '22px',
@@ -307,7 +356,7 @@ export const Header = ({ className = '' }: HeaderProps) => {
                     </a>
                     <a
                         href="#nosotros"
-                        className={`nav-link no-underline transition-colors hover:opacity-70 ${activeSection === 'nosotros' ? 'active' : ''}`}
+                        className={`nav-link no-underline transition-colors hover:opacity-70 ${activeSection === 'servicios' ? 'active' : ''}`}
                         style={{
                             width: '67px',
                             height: '22px',
