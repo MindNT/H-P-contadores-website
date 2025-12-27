@@ -13,7 +13,6 @@ interface Service {
     id: number;
     title: string;
     description: string;
-    price: string;
 }
 
 interface ServiceModalProps {
@@ -26,32 +25,27 @@ const servicesData: Service[] = [
     {
         id: 1,
         title: 'Contabilidad General',
-        description: 'Contabilidad para personas físicas y morales. Elaboración de estados financieros. Contabilidad electrónica conforme al SAT.',
-        price: '$100 MXN'
+        description: 'Contabilidad para personas físicas y morales. Elaboración de estados financieros. Contabilidad electrónica conforme al SAT.'
     },
     {
         id: 2,
         title: 'Declaraciones Fiscales',
-        description: 'Declaraciones mensuales y anuales. Declaraciones informativas (DIOT, DIM, etc.). Determinación de pagos provisionales.',
-        price: '$100 MXN'
+        description: 'Declaraciones mensuales y anuales. Declaraciones informativas (DIOT, DIM, etc.). Determinación de pagos provisionales.'
     },
     {
         id: 3,
         title: 'Nómina y Seguridad Social',
-        description: 'Cálculo de nómina y generación de CFDI de nómina. Cálculo de cuotas IMSS e INFONAVIT. Determinación y presentación de SUA. Registro patronal y movimientos afiliatorios ante el IMSS.',
-        price: '$100 MXN'
+        description: 'Cálculo de nómina y generación de CFDI de nómina. Cálculo de cuotas IMSS e INFONAVIT. Determinación y presentación de SUA. Registro patronal y movimientos afiliatorios ante el IMSS.'
     },
     {
         id: 4,
         title: 'Asesoría Fiscal y Planeación Estratégica',
-        description: 'Optimización de cargas fiscales. Planeación fiscal para personas físicas y morales.',
-        price: '$100 MXN'
+        description: 'Optimización de cargas fiscales. Planeación fiscal para personas físicas y morales.'
     },
     {
         id: 5,
         title: 'Gestión de Créditos Fiscales',
-        description: 'Análisis y defensa ante determinaciones de créditos fiscales. Revisión de notificaciones y resoluciones del SAT o IMSS. Asesoría para el pago en parcialidades o condonaciones conforme al CFF. Interposición de medios de defensa (recurso de revocación, juicios de nulidad). Revisión de facultades de comprobación de la autoridad. Revisión de prescripción o improcedencia del crédito fiscal.',
-        price: '$100 MXN'
+        description: 'Análisis y defensa ante determinaciones de créditos fiscales. Revisión de notificaciones y resoluciones del SAT o IMSS. Asesoría para el pago en parcialidades o condonaciones conforme al CFF. Interposición de medios de defensa (recurso de revocación, juicios de nulidad). Revisión de facultades de comprobación de la autoridad. Revisión de prescripción o improcedencia del crédito fiscal.'
     }
 ];
 
@@ -101,7 +95,7 @@ const ServiceModal = ({ isOpen, onClose, service }: ServiceModalProps) => {
                 }
                 
                 /* Asegurar que el contenido sea visible */
-                .modal-title, .modal-description, .modal-price {
+                .modal-title, .modal-description {
                     color: #FFFFFF !important;
                 }
 
@@ -182,24 +176,20 @@ const ServiceModal = ({ isOpen, onClose, service }: ServiceModalProps) => {
                             fontSize: '18px',
                             lineHeight: '28px',
                             color: '#FFFFFF',
-                            margin: '0 0 40px 0',
+                            margin: '0 0 60px 0',
                             opacity: 0.95
                         }}>
                             {service.description}
                         </p>
 
-                        <div style={{
-                            fontFamily: 'Nunito Sans',
-                            fontWeight: 700,
-                            fontSize: '64px',
-                            color: '#FFFFFF',
-                            margin: '0 0 40px 0'
-                        }}>
-                            {service.price}
-                        </div>
-
                         <div className="modal-buttons">
-                            <button className="modal-button modal-button-primary">
+                            <button
+                                className="modal-button modal-button-primary"
+                                onClick={() => {
+                                    const message = encodeURIComponent(`Hola, me interesa el servicio de ${service.title}`);
+                                    window.open(`https://wa.me/529992302518?text=${message}`, '_blank');
+                                }}
+                            >
                                 Contactar con un asesor
                             </button>
                             <button className="modal-button" onClick={onClose}>
